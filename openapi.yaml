@@ -1,0 +1,748 @@
+openapi: 3.0.0
+
+info:
+  description: |
+    전자(세금)계산서 애플리케이션 소프트웨어를 구축하고 통합하기 위한 정의 및 프로토콜 세트를 제공합니다.<br/>
+    모든 요청에는 `web-token`을 사용하여 권한이 있는 사용자에게만 액세스를 허용합니다.
+
+    # 인증
+
+    JWT(JSON Web Token)는 당사자 간에 JSON 오브젝트로 정보를 안전하게 전송하는, 간편하고 URL에 안전한 방법을 정의하는 개방형 표준입니다. JWT는 API에 액세스하려는 클라이언트를 인증하는 데 사용할 수 있으므로 보통 RESTful API를 보안하는 데 사용됩니다.
+      - JWT(JSON Web Token)에서 청구
+      - JWT(JSON Web Token) 요청 제출
+    <p>
+    인증 방법 작성 중...
+
+  version: 1.0.0
+  title: Blueport e-TaxBill API Documentation
+  termsOfService: 
+  contact:
+    name: API Support
+    email: rnd@blueport.co.kr
+    url: https://www.blueport.co.kr
+  x-logo:
+    url: 'blueport_logo.png'
+    altText: Blueport logo
+  license:
+    name: #Apache 2.0
+    url: #'http://www.apache.org/licenses/LICENSE-2.0.html'
+externalDocs:
+  description: 
+  url: 
+tags:
+  - name: 전자(세금)계산서
+    description: 전자(세금)계산서 발행 및 조회
+  - name: 결과코드
+    description: |
+      전자(세금)계산서 발급 처리결과에 해당하는 응답코드 정의
+        - `SUC001`  성공
+        - `SYS001`  연계 사업자 인증 오류
+        - `SYS002`  중복된 SubmitID
+        - `SYS003`  존재하지 않는 SubmitID
+        - `SYS101`  인증서 암호 불일치 오류
+        - `SYS102`  유효하지 않은 인증서 오류
+        - `SYS103`  전자(세금)계산서 접수 오류
+        - `SYN001`  인증서 복호화 실패
+        - `SYN002`  공급사업자, 수탁자 전자서명 오류
+        - `SYN003`  승인번호 중복 오류
+        - `SYN004`  전자(세금)계산서 스키마 오류
+        - `ERR001`  공급사업자 사업자번호 오류
+        - `ERR002`  공급받는자 사업자번호 오류
+        - `ERR003`  수탁사업자 등록번호 오류
+        - `ERR005`  발급일시 오류
+        - `ERR006`  작성일자 오류
+        - `ERR007`  공급가액, 세액 오류
+        - `ERR008`  코드 유형 오류
+        - `ERR009`  폐업사업자 발급 오류
+        - `ERR010`  국세청 등록번호 오류
+        - `ERR011`  당초승인번호 오류
+        - `ERR999`  정의되지 않은 기타오류
+
+#x-tagGroups:
+#  - name: REST API LIST
+#    tags:
+#      - 전자(세금)계산서
+
+paths:
+  /v1/health-check:
+    get:
+      servers:
+        - url: http://tax.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 서버상태체크
+      description: 서버에 요청을 보내 서비스 가능 상태를 체크한다.
+      responses:
+        200:
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: String
+              example: It's working in BLUEPORT_ETAXBILL
+  /v1/tax-invoice/issue:
+    post:
+      servers:
+        - url: http://tax.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 계산서 발행
+      description: 국세청(홈택스)에 전자(세금)계산서를 발행한다.
+      requestBody:
+        $ref: "#/components/requestBodies/TaxInvoiceReq"
+      responses:
+        200:
+          $ref: "#/components/responses/200Ok"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500InternalServerError"
+              examples:
+                result:
+                  value:
+                    {
+                      "timestamp": "2021-10-07T08:21:02.914+00:00",
+                      "status": 500,
+                      "error": "Internal Server Error",
+                      "path": "/v1/tax-invoice/issue"
+                    }
+    put:
+      servers:
+        - url: http://tax.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 계산서 수정 발행
+      description: 국세청(홈택스)에 전자(세금)계산서를 수정 발행한다.
+      requestBody:
+        $ref: "#/components/requestBodies/TaxInvoiceUpdateReq"
+      responses:
+        200:
+          $ref: "#/components/responses/200Ok"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500InternalServerError"
+              examples:
+                result:
+                  value:
+                    {
+                      "timestamp": "2021-10-07T09:21:02.914+00:00",
+                      "status": 500,
+                      "error": "Internal Server Error",
+                      "path": "/v1/tax-invoice/issue"
+                    }
+  /v1/tax-invoice/list:
+    get:
+      servers:
+        - url: http://tax.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 계산서 목록 조회
+      description: 작성 중....
+  /v1/tax-invoice/{issueId}:
+    get:
+      servers:
+        - url: http://tax.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 계산서 상세 조회
+      description: 작성 중....
+  
+components:
+  requestBodies:
+    TaxInvoiceReq:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TaxInvoiceReq"
+          examples:
+            전자세금계산서:
+              value:
+                {
+                  "invoiceTypeCode": "0101",
+                  "writeDate": "20210902",
+                  "supplyAmount": 30000,
+                  "taxAmount": 3000,
+                  "description1": "이 문서는 일반 전자세금계산서 문서입니다.",
+                  "description2": null,
+                  "description3": null,
+                  "modifyCode": null,
+                  "purposeType": "01",
+                  "originalIssueId": null,
+
+                  "paymentCash": 11000,
+                  "paymentCheck": null,
+                  "paymentNote": 22000,
+                  "paymentCredit": null,
+                  
+                  "supplierBusinessId": "2118655017",
+                  "supplierTaxRegistrationId": null,
+                  "supplierCompanyName": "(주)블루포트",
+                  "supplierCeoName": "박재영",
+                  "supplierAddress": null,
+                  "supplierBusinessType": null,
+                  "supplierBusinessItem": null,
+                  "supplierDepartmentName": null,
+                  "supplierPersonName": null,
+                  "supplierPhone": null,
+                  "supplierEmail": null,
+
+                  "consumerBusinessId": "1234567890",
+                  "consumerTaxRegistrationId": null,
+                  "consumerCompanyName": "(주)유령",
+                  "consumerCeoName": "도깨비",
+                  "consumerAddress": null,
+                  "consumerBusinessType": null,
+                  "consumerBusinessItem": null,
+                  "consumerDepartmentName1": null,
+                  "consumerPersonName1": null,
+                  "consumerPhone1": null,
+                  "consumerEmail1": null,
+                  "consumerDepartmentName2": null,
+                  "consumerPersonName2": null,
+                  "consumerPhone2": null,
+                  "consumerEmail2": null,
+
+                  "taxInvoiceTradeLineItems": [
+                      {
+                          "itemSupplyDate": "20210902",
+                          "itemName": "item_name",
+                          "itemInformation": "kg",
+                          "itemQuantity": 2,
+                          "itemUnitPrice": 5000,
+                          "itemSupplyAmount": 10000,
+                          "itemTaxAmount": 1000,
+                          "itemDescription": ""
+                      },
+                      {
+                          "itemSupplyDate": "20210902",
+                          "itemName": "item_name2",
+                          "itemInformation": "kg",
+                          "itemQuantity": 2,
+                          "itemUnitPrice": 10000,
+                          "itemSupplyAmount": 20000,
+                          "itemTaxAmount": 2000,
+                          "itemDescription": ""
+                      }
+                  ]
+                }
+            전자계산서:
+              value:
+                {
+                  "invoiceTypeCode": "0301",
+                  "writeDate": "20210902",
+                  "supplyAmount": 30000,
+                  "description1": "이 문서는 일반 전자계산서 문서입니다.",
+                  "description2": null,
+                  "description3": null,
+                  "modifyCode": null,
+                  "purposeType": "01",
+                  "originalIssueId": null,
+
+                  "paymentCash": 10000,
+                  "paymentCheck": null,
+                  "paymentNote": 20000,
+                  "paymentCredit": null,
+                  
+                  "supplierBusinessId": "2118655017",
+                  "supplierTaxRegistrationId": null,
+                  "supplierCompanyName": "블루포트",
+                  "supplierCeoName": "박재영",
+                  "supplierAddress": null,
+                  "supplierBusinessType": null,
+                  "supplierBusinessItem": null,
+                  "supplierDepartmentName": null,
+                  "supplierPersonName": null,
+                  "supplierPhone": null,
+                  "supplierEmail": null,
+
+                  "consumerBusinessId": "1234567890",
+                  "consumerTaxRegistrationId": null,
+                  "consumerCompanyName": "(주)유령",
+                  "consumerCeoName": "도깨비",
+                  "consumerAddress": null,
+                  "consumerBusinessType": null,
+                  "consumerBusinessItem": null,
+                  "consumerDepartmentName1": null,
+                  "consumerPersonName1": null,
+                  "consumerPhone1": null,
+                  "consumerEmail1": null,
+                  "consumerDepartmentName2": null,
+                  "consumerPersonName2": null,
+                  "consumerPhone2": null,
+                  "consumerEmail2": null,
+
+                  "taxInvoiceTradeLineItems": [
+                      {
+                          "itemSupplyDate": "20210902",
+                          "itemName": "item_name",
+                          "itemInformation": "kg",
+                          "itemQuantity": 2,
+                          "itemUnitPrice": 5000,
+                          "itemSupplyAmount": 10000,
+                          "itemDescription": ""
+                      },
+                      {
+                          "itemSupplyDate": "20210902",
+                          "itemName": "item_name2",
+                          "itemInformation": "kg",
+                          "itemQuantity": 2,
+                          "itemUnitPrice": 10000,
+                          "itemSupplyAmount": 20000,
+                          "itemDescription": ""
+                      }
+                  ]
+              }
+    TaxInvoiceUpdateReq:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TaxInvoiceReq"
+          examples:
+            전자세금계산서:
+              value:
+                {
+                  "invoiceTypeCode": "0201",
+                  "writeDate": "20210902",
+                  "supplyAmount": 30000,
+                  "taxAmount": 3000,
+                  "description1": "이 문서는 수정 전자세금계산서 문서입니다.",
+                  "description2": null,
+                  "description3": null,
+                  "modifyCode": "01",
+                  "purposeType": "01",
+                  "originalIssueId": "2021090200000000abcdefgh",
+
+                  "paymentCash": 11000,
+                  "paymentCheck": null,
+                  "paymentNote": 22000,
+                  "paymentCredit": null,
+                  
+                  "supplierBusinessId": "2118655017",
+                  "supplierTaxRegistrationId": null,
+                  "supplierCompanyName": "블루포트",
+                  "supplierCeoName": "박재영",
+                  "supplierAddress": null,
+                  "supplierBusinessType": null,
+                  "supplierBusinessItem": null,
+                  "supplierDepartmentName": null,
+                  "supplierPersonName": null,
+                  "supplierPhone": null,
+                  "supplierEmail": null,
+
+                  "consumerBusinessId": "1234567890",
+                  "consumerTaxRegistrationId": null,
+                  "consumerCompanyName": "(주)유령",
+                  "consumerCeoName": "도깨비",
+                  "consumerAddress": null,
+                  "consumerBusinessType": null,
+                  "consumerBusinessItem": null,
+                  "consumerDepartmentName1": null,
+                  "consumerPersonName1": null,
+                  "consumerPhone1": null,
+                  "consumerEmail1": null,
+                  "consumerDepartmentName2": null,
+                  "consumerPersonName2": null,
+                  "consumerPhone2": null,
+                  "consumerEmail2": null,
+
+                  "taxInvoiceTradeLineItems": [
+                      {
+                          "itemSupplyDate": "20210902",
+                          "itemName": "item_name",
+                          "itemInformation": "kg",
+                          "itemQuantity": 2,
+                          "itemUnitPrice": 5000,
+                          "itemSupplyAmount": 10000,
+                          "itemTaxAmount": 1000,
+                          "itemDescription": ""
+                      },
+                      {
+                          "itemSupplyDate": "20210902",
+                          "itemName": "item_name2",
+                          "itemInformation": "kg",
+                          "itemQuantity": 2,
+                          "itemUnitPrice": 10000,
+                          "itemSupplyAmount": 20000,
+                          "itemTaxAmount": 2000,
+                          "itemDescription": ""
+                      }
+                  ]
+                }
+            전자계산서:
+              value:
+                {
+                  "invoiceTypeCode": "0401",
+                  "writeDate": "20210902",
+                  "supplyAmount": 30000,
+                  "description1": "이 문서는 수정 전자계산서 문서입니다.",
+                  "description2": null,
+                  "description3": null,
+                  "modifyCode": "01",
+                  "purposeType": "01",
+                  "originalIssueId": "2021090200000000abcdefgh",
+
+                  "paymentCash": 10000,
+                  "paymentCheck": null,
+                  "paymentNote": 20000,
+                  "paymentCredit": null,
+                  
+                  "supplierBusinessId": "2118655017",
+                  "supplierTaxRegistrationId": null,
+                  "supplierCompanyName": "블루포트",
+                  "supplierCeoName": "박재영",
+                  "supplierAddress": null,
+                  "supplierBusinessType": null,
+                  "supplierBusinessItem": null,
+                  "supplierDepartmentName": null,
+                  "supplierPersonName": null,
+                  "supplierPhone": null,
+                  "supplierEmail": null,
+
+                  "consumerBusinessId": "1234567890",
+                  "consumerTaxRegistrationId": null,
+                  "consumerCompanyName": "(주)유령",
+                  "consumerCeoName": "도깨비",
+                  "consumerAddress": null,
+                  "consumerBusinessType": null,
+                  "consumerBusinessItem": null,
+                  "consumerDepartmentName1": null,
+                  "consumerPersonName1": null,
+                  "consumerPhone1": null,
+                  "consumerEmail1": null,
+                  "consumerDepartmentName2": null,
+                  "consumerPersonName2": null,
+                  "consumerPhone2": null,
+                  "consumerEmail2": null,
+
+                  "taxInvoiceTradeLineItems": [
+                      {
+                          "itemSupplyDate": "20210902",
+                          "itemName": "item_name",
+                          "itemInformation": "kg",
+                          "itemQuantity": 2,
+                          "itemUnitPrice": 5000,
+                          "itemSupplyAmount": 10000,
+                          "itemDescription": ""
+                      },
+                      {
+                          "itemSupplyDate": "20210902",
+                          "itemName": "item_name2",
+                          "itemInformation": "kg",
+                          "itemQuantity": 2,
+                          "itemUnitPrice": 10000,
+                          "itemSupplyAmount": 20000,
+                          "itemDescription": ""
+                      }
+                  ]
+                }
+  responses:
+    200Ok:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                description: 응답성공여부
+                type: Boolean
+              code:
+                description: 응답코드(결과코드 참조)
+                type: String
+              msg:
+                description: 응답메시지
+                type: String
+          examples:
+            result:
+              value:
+                {
+                  "success": true,
+                  "code": "SUC001",
+                  "msg": "성공"
+                }
+    500InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              timestamp:
+                description: 오류발생시각
+                type: String
+                format: DateTime
+              status:
+                description: 상태코드
+                type: Integer
+                example: 500
+              error:
+                description: 오류명
+                type: String
+                example: Internal Server Error
+              path:
+                description: 요청경로
+                type: String
+
+# 데이터 모델 정의
+  schemas:
+    TaxInvoiceReq:
+      type: object
+      required:
+        - invoiceTypeCode
+        - writeDate
+        - supplyAmount
+        - purposeType
+        - supplierBusinessId
+        - supplierCompanyName
+        - supplierCeoName
+        - consumerBusinessId
+        - consumerCompanyName
+        - consumerCeoName
+      properties:
+        invoiceTypeCode:
+          description: '세금계산서종류 (분류2자리 + 종류2자리 = 4자리코드)<br> 분류 - 01:세금계산서, 02:수정세금계산서, 03:계산서, 04:수정계산서<br/> 종류 - 01:일반, 02:영세율, 03:위수탁, 04:수입, 05:영세율위수탁, 06:수입납부유예'
+          type: String
+        writeDate:
+          description: 작성일자
+          type: String
+          format: Date
+          pattern: YYYYMMDD
+        supplyAmount:
+          description: 공급가액
+          type: Long
+        taxAmount:
+          description: 세액
+          type: Long
+        totalAmount:
+          description: 총금액
+          type: Long
+        description1:
+          description: 비고1
+          type: String
+          minItems: 1
+        description2:
+          description: 비고2
+          type: String
+        description3:
+          description: 비고3
+          type: String
+        modifyCode:
+          description: '수정코드<br/> - 01:기재사항의 착오/정정/세율을 잘못 적용한 경우<br/> - 02:공급가액 변동<br/> - 03:환입<br/> - 04:계약의 해제<br/> - 05:내국신용장 사후 개설<br/> - 06: 착오에 의한 이중발급, 면세 등 발급대상이 아닌 거래 등'
+          type: String
+          default: '수정 발행의 경우 필수 입력'
+        purposeType:
+          description: '영수(01)/청구(02) 구분'
+          type: String
+        originalIssueId: 
+          description: 당초승인번호
+          type: String
+        importDeclarationId: 
+          description: 수입신고서 번호
+          type: String
+        batchStartDate: 
+          description: 일괄발급 시작일
+          type: String
+          format: Date
+          pattern: YYYYMMDD
+        batchEndDate: 
+          description: 일괄발급 종료일 
+          type: String
+          format: Date
+          pattern: YYYYMMDD
+        batchItemQuantity: 
+          description: 일괄발급 수입 총 건
+          type: Integer
+        paymentCash:
+          description: 현금
+          type: Long
+        paymentCheck: 
+          description: 수표 
+          type: Long
+        paymentNote: 
+          description: 어음 
+          type: Long
+        paymentCredit: 
+          description: 외상미수금
+          type: Long
+        supplierBusinessId:
+          description: "공급자 등록번호<br/>사업자등록만 기재 : nnnnnnnnnn ( - 불포함, 10byte)"
+          type: String
+        supplierTaxRegistrationId:
+          description: 공급자 종사업장 번호
+          type: String
+        supplierCompanyName:
+          description: 공급자 상호
+          type: String
+        supplierCeoName:
+          description: 공급자 대표자명
+          type: String
+        supplierAddress:
+          description: 공급자 사업장 주소
+          type: String
+        supplierBusinessType:
+          description: 공급자 업태
+          type: String
+        supplierBusinessItem:
+          description: 공급자 종목
+          type: String
+        supplierDepartmentName:
+          description: 공급자 담당부서명
+          type: String
+        supplierPersonName:
+          description: 공급자 담당자명
+          type: String
+        supplierPhone:
+          description: 공급자 당담자 전화번호
+          type: String
+        supplierEmail:
+          description: 공급자 이메일 
+          type: String
+        consumerBusinessId:
+          description: "공급받는자 등록번호<br/>사업자등록번호 형식: nnnnnnnnnn ( - 불포함, 10byte)<br/>개인 주민번호 형식: nnnnnnnnnnnnn ( - 불포함, 13byte)<br/>외국인 형식: 9999999999999(고정값)<br/> (비고에 여권번호 및 외국인등록번호 등을 기재)"
+          type: String
+        consumerTaxRegistrationId:
+          description: 공급받는자 종사업장 번호
+          type: String
+        consumerCompanyName:
+          description: 공급받는자 상호
+          type: String
+        consumerCeoName:
+          description: 공급받는자 대표자명
+          type: String
+        consumerAddress:
+          description: 공급받는자 사업장 주소
+          type: String
+        consumerBusinessType:
+          description: 공급받는자 업태
+          type: String
+        consumerBusinessItem:
+          description: 공급받는자 종목
+          type: String
+        consumerDepartmentName1:
+          description: 공급받는자 담당부서명1
+          type: String
+        consumerPersonName1:
+          description: 공급받는자 담당부서명2
+          type: String
+        consumerPhone1:
+          description: 공급받는자 담당자 전화번호1
+          type: String
+        consumerEmail1:
+          description: 공급받는자 담당자 이메일1
+          type: String
+        consumerDepartmentName2:
+          description: 공급받는자 담당부서명2
+          type: String
+        consumerPersonName2:
+          description: 공급받는자 담당자명2
+          type: String
+        consumerPhone2:
+          description: 공급받는자 담당자 전화번호2
+          type: String
+        consumerEmail2:
+          description: 공급받는자 담당자 이메일2
+          type: String
+        brokerBusinessId:
+          description: 수탁사업자 등록번호
+          type: String
+        brokerTaxRegistrationId:
+          description: 수탁자 종사업장 번호
+          type: String
+        brokerCompanyName:
+          description: 수탁자 상호
+          type: String
+        brokerCeoName:
+          description: 수탁자 대표자명
+          type: String
+        brokerAddress:
+          description: 수탁자 사업장 주소
+          type: String
+        brokerBusinessType:
+          description: 수탁자 업태
+          type: String
+        brokerBusinessItem:
+          description: 수탁자 종목
+          type: String
+        brokerDepartmentName:
+          description: 수탁자 담당부서명
+          type: String
+        brokerPersonName:
+          description: 수탁자 담당자명
+          type: String
+        brokerPhone:
+          description: 수탁자 담담자 전화번호
+          type: String
+        brokerEmail:
+          description: 수탁자 이메일
+          type: String
+        taxInvoiceTradeLineItems:
+          description: "상품정보(한번에 99개까지 전송 가능)"
+          type: array
+          minItems: 1
+          xml:
+            name: taxInvoiceTradeLineItem
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/TaxInvoiceTradeLineItem'
+
+    TaxInvoiceTradeLineItem:
+      type: object
+      properties:
+        itemSupplyDate: 
+          description: 일자
+          type: String
+          format: Date
+          pattern: YYYYMMDD
+        itemName:
+          description: 품목
+          type: String
+        itemInformation:
+          description: 규격
+          type: String
+        itemQuantity:
+          description: 수량
+          type: Float
+          format: '0.00'
+          pattern: 소수점 2자리까지 허용
+        itemUnitPrice:
+          description: 단가
+          type: Double
+          format: '0.00'
+          pattern: 소수점 2자리까지 허용
+        itemSupplyAmount:
+          description: 공급가액
+          type: Long
+        itemTaxAmount:
+          description: 세액
+          type: Long
+        itemDescription:
+          description: 품목비고
+          type: String
+      xml:
+        name: TaxInvoiceTradeLineItems
+
+    500InternalServerError:
+      type: object
+      properties:
+        timestamp:
+          description: 오류발생시각
+          type: String
+          format: DateTime
+        status:
+          description: 상태코드
+          type: Integer
+          example: 500
+        error:
+          description: 오류명
+          type: String
+          example: Internal Server Error
+        path:
+          description: 요청경로
+          type: String    
