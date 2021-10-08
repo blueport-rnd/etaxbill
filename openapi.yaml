@@ -520,9 +520,9 @@ components:
         taxAmount:
           description: 세액
           type: Long
-        totalAmount:
-          description: 총금액
-          type: Long
+        #totalAmount:
+        #  description: 총금액
+        #  type: Long
         description1:
           description: 비고1
           type: String
