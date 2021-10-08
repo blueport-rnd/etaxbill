@@ -21,7 +21,7 @@ info:
     email: rnd@blueport.co.kr
     url: https://www.blueport.co.kr
   x-logo:
-    url: 'blueport_logo.png'
+    url: './blueport_logo.png'
     altText: Blueport logo
   license:
     name: #Apache 2.0
