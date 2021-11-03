@@ -323,7 +323,7 @@ paths:
           schema:
             type: String
             example: '0101'
-        - name: sResultStatusCode
+        - name: sProcessStatusCode
           in: query
           description: "처리상태('01': 처리완료, '02': 처리중, '03': 처리불가)"
           schema:
@@ -803,6 +803,7 @@ components:
                               "brokerPersonName": null,
                               "brokerPhone": null,
                               "brokerEmail": null,
+                              "processStatusCode": "01",
                               "resultStatusCode": "SUC001",
                               "resultMessage": "성공"
                           },
@@ -862,6 +863,7 @@ components:
                               "brokerPersonName": null,
                               "brokerPhone": null,
                               "brokerEmail": null,
+                              "processStatusCode": "03",
                               "resultStatusCode": "ERR007",
                               "resultMessage": "공급가액, 세액 오류"
                           },
@@ -921,6 +923,7 @@ components:
                               "brokerPersonName": null,
                               "brokerPhone": null,
                               "brokerEmail": null,
+                              "processStatusCode": "03",
                               "resultStatusCode": "ERR007",
                               "resultMessage": "공급가액, 세액 오류"
                           }
@@ -1038,6 +1041,7 @@ components:
                       "brokerPersonName": null,
                       "brokerPhone": null,
                       "brokerEmail": null,
+                      "processStatusCode": "02",
                       "resultStatusCode": null,
                       "resultMessage": null,
                       "taxInvoiceTradeLineItems": [
