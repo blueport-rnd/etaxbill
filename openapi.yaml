@@ -177,13 +177,14 @@ paths:
                       "error": "Internal Server Error",
                       "path": "/v1/tax-invoice/issue"
                     }
-    put:
+  /etaxbill-service/v1/tax-invoice/batch/issue:
+    post:
       servers:
         - url: http://tax.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
-      summary: 계산서 수정 발행
-      description: 국세청(홈택스)에 전자(세금)계산서를 수정 발행한다.
+      summary: 계산서 일괄 발행
+      description: 국세청(홈택스)에 전자(세금)계산서를 일괄 발행한다.
       parameters:
         - name: Authorization
           in: header
@@ -198,10 +199,10 @@ paths:
           schema:
             type: String
       requestBody:
-        $ref: "#/components/requestBodies/TaxInvoiceUpdateReq"
+        $ref: "#/components/requestBodies/TaxInvoiceBatchReq"
       responses:
         200:
-          $ref: "#/components/responses/200Ok"
+          $ref: "#/components/responses/200OkArray"
         500:
           description: Internal Server Error
           content:
@@ -550,150 +551,150 @@ components:
                       }
                   ]
               }
-    TaxInvoiceUpdateReq:
+    TaxInvoiceBatchReq:
       required: true
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/TaxInvoiceReq"
           examples:
-            전자세금계산서:
+            sample:
               value:
-                {
-                  "invoiceTypeCode": "0201",
-                  "writeDate": "20211013",
-                  "supplyAmount": 5179000,
-                  "taxAmount": 517900,
-                  "description1": "이 문서는 수정 전자세금계산서 문서입니다.",
-                  "description2": null,
-                  "description3": null,
-                  "modifyCode": "01",
-                  "purposeType": "01",
-                  "originalIssueId": "2021090200000000abcdefgh",
+                [
+                  {
+                    "invoiceTypeCode": "0201",
+                    "writeDate": "20211013",
+                    "supplyAmount": 5179000,
+                    "taxAmount": 517900,
+                    "description1": "이 문서는 수정 전자세금계산서 문서입니다.",
+                    "description2": null,
+                    "description3": null,
+                    "modifyCode": "01",
+                    "purposeType": "01",
+                    "originalIssueId": "2021090200000000abcdefgh",
 
-                  "paymentCash": 696900,
-                  "paymentCheck": null,
-                  "paymentNote": null,
-                  "paymentCredit": 5000000,
-                  
-                  "supplierBusinessId": "0987654321",
-                  "supplierTaxRegistrationId": null,
-                  "supplierCompanyName": "(주)블루포트",
-                  "supplierCeoName": "박재영",
-                  "supplierAddress": "서울시 서초구 서초대로 78길 5 12층(서초동, 대각빌딩)",
-                  "supplierBusinessType": "도,소매",
-                  "supplierBusinessItem": "소프트웨어 개발 및 공급",
-                  "supplierDepartmentName": null,
-                  "supplierPersonName": null,
-                  "supplierPhone": null,
-                  "supplierEmail": "abc@blueport.co.kr",
+                    "paymentCash": 696900,
+                    "paymentCheck": null,
+                    "paymentNote": null,
+                    "paymentCredit": 5000000,
+                    
+                    "supplierBusinessId": "0987654321",
+                    "supplierTaxRegistrationId": null,
+                    "supplierCompanyName": "(주)블루포트",
+                    "supplierCeoName": "박재영",
+                    "supplierAddress": "서울시 서초구 서초대로 78길 5 12층(서초동, 대각빌딩)",
+                    "supplierBusinessType": "도,소매",
+                    "supplierBusinessItem": "소프트웨어 개발 및 공급",
+                    "supplierDepartmentName": null,
+                    "supplierPersonName": null,
+                    "supplierPhone": null,
+                    "supplierEmail": "abc@blueport.co.kr",
 
-                  "consumerBusinessId": "1234567890",
-                  "consumerTaxRegistrationId": null,
-                  "consumerCompanyName": "(주)유령",
-                  "consumerCeoName": "도깨비",
-                  "consumerAddress": null,
-                  "consumerBusinessType": "서비스.임대",
-                  "consumerBusinessItem": "컴퓨터주변기기",
-                  "consumerDepartmentName1": "SW, IT, CT",
-                  "consumerPersonName1": null,
-                  "consumerPhone1": null,
-                  "consumerEmail1": "admin@ghost.com",
-                  "consumerDepartmentName2": null,
-                  "consumerPersonName2": null,
-                  "consumerPhone2": null,
-                  "consumerEmail2": null,
+                    "consumerBusinessId": "1234567890",
+                    "consumerTaxRegistrationId": null,
+                    "consumerCompanyName": "(주)유령",
+                    "consumerCeoName": "도깨비",
+                    "consumerAddress": null,
+                    "consumerBusinessType": "서비스.임대",
+                    "consumerBusinessItem": "컴퓨터주변기기",
+                    "consumerDepartmentName1": "SW, IT, CT",
+                    "consumerPersonName1": null,
+                    "consumerPhone1": null,
+                    "consumerEmail1": "admin@ghost.com",
+                    "consumerDepartmentName2": null,
+                    "consumerPersonName2": null,
+                    "consumerPhone2": null,
+                    "consumerEmail2": null,
 
-                  "taxInvoiceTradeLineItems": [
-                      {
-                          "itemSupplyDate": "20211013",
-                          "itemName": "DevExpress DXperience",
-                          "itemInformation": "DevExpress DXperience Subscription",
-                          "itemQuantity": 2,
-                          "itemUnitPrice": 1880000,
-                          "itemSupplyAmount": 3760000,
-                          "itemTaxAmount": 376000,
-                          "itemDescription": ""
-                      },
-                      {
-                          "itemSupplyDate": "20211013",
-                          "itemName": "Infragistics Professional",
-                          "itemInformation": "Infragistics Professional Subscription",
-                          "itemQuantity": 1,
-                          "itemUnitPrice": 1419000,
-                          "itemSupplyAmount": 1419000,
-                          "itemTaxAmount": 141900,
-                          "itemDescription": ""
-                      }
-                  ]
-                }
-            전자계산서:
-              value:
-                {
-                  "invoiceTypeCode": "0401",
-                  "writeDate": "20211013",
-                  "supplyAmount": 5179000,
-                  "description1": "이 문서는 수정 전자계산서 문서입니다.",
-                  "description2": null,
-                  "description3": null,
-                  "modifyCode": "01",
-                  "purposeType": "01",
-                  "originalIssueId": "2021090200000000abcdefgh",
+                    "taxInvoiceTradeLineItems": [
+                        {
+                            "itemSupplyDate": "20211013",
+                            "itemName": "DevExpress DXperience",
+                            "itemInformation": "DevExpress DXperience Subscription",
+                            "itemQuantity": 2,
+                            "itemUnitPrice": 1880000,
+                            "itemSupplyAmount": 3760000,
+                            "itemTaxAmount": 376000,
+                            "itemDescription": ""
+                        },
+                        {
+                            "itemSupplyDate": "20211013",
+                            "itemName": "Infragistics Professional",
+                            "itemInformation": "Infragistics Professional Subscription",
+                            "itemQuantity": 1,
+                            "itemUnitPrice": 1419000,
+                            "itemSupplyAmount": 1419000,
+                            "itemTaxAmount": 141900,
+                            "itemDescription": ""
+                        }
+                    ]
+                  },
+                  {
+                    "invoiceTypeCode": "0401",
+                    "writeDate": "20211013",
+                    "supplyAmount": 5179000,
+                    "description1": "이 문서는 수정 전자계산서 문서입니다.",
+                    "description2": null,
+                    "description3": null,
+                    "modifyCode": "01",
+                    "purposeType": "01",
+                    "originalIssueId": "2021090200000000abcdefgh",
 
-                  "paymentCash": 179000,
-                  "paymentCheck": null,
-                  "paymentNote": null,
-                  "paymentCredit": 5000000,
-                  
-                  "supplierBusinessId": "0987654321",
-                  "supplierTaxRegistrationId": null,
-                  "supplierCompanyName": "(주)블루포트",
-                  "supplierCeoName": "박재영",
-                  "supplierAddress": "서울시 서초구 서초대로 78길 5 12층(서초동, 대각빌딩)",
-                  "supplierBusinessType": "도,소매",
-                  "supplierBusinessItem": "소프트웨어 개발 및 공급",
-                  "supplierDepartmentName": null,
-                  "supplierPersonName": null,
-                  "supplierPhone": null,
-                  "supplierEmail": "abc@blueport.co.kr",
+                    "paymentCash": 179000,
+                    "paymentCheck": null,
+                    "paymentNote": null,
+                    "paymentCredit": 5000000,
+                    
+                    "supplierBusinessId": "0987654321",
+                    "supplierTaxRegistrationId": null,
+                    "supplierCompanyName": "(주)블루포트",
+                    "supplierCeoName": "박재영",
+                    "supplierAddress": "서울시 서초구 서초대로 78길 5 12층(서초동, 대각빌딩)",
+                    "supplierBusinessType": "도,소매",
+                    "supplierBusinessItem": "소프트웨어 개발 및 공급",
+                    "supplierDepartmentName": null,
+                    "supplierPersonName": null,
+                    "supplierPhone": null,
+                    "supplierEmail": "abc@blueport.co.kr",
 
-                  "consumerBusinessId": "1234567890",
-                  "consumerTaxRegistrationId": null,
-                  "consumerCompanyName": "(주)유령",
-                  "consumerCeoName": "도깨비",
-                  "consumerAddress": null,
-                  "consumerBusinessType": "서비스.임대",
-                  "consumerBusinessItem": "컴퓨터주변기기",
-                  "consumerDepartmentName1": "SW, IT, CT",
-                  "consumerPersonName1": null,
-                  "consumerPhone1": null,
-                  "consumerEmail1": "admin@ghost.com",
-                  "consumerDepartmentName2": null,
-                  "consumerPersonName2": null,
-                  "consumerPhone2": null,
-                  "consumerEmail2": null,
+                    "consumerBusinessId": "1234567890",
+                    "consumerTaxRegistrationId": null,
+                    "consumerCompanyName": "(주)유령",
+                    "consumerCeoName": "도깨비",
+                    "consumerAddress": null,
+                    "consumerBusinessType": "서비스.임대",
+                    "consumerBusinessItem": "컴퓨터주변기기",
+                    "consumerDepartmentName1": "SW, IT, CT",
+                    "consumerPersonName1": null,
+                    "consumerPhone1": null,
+                    "consumerEmail1": "admin@ghost.com",
+                    "consumerDepartmentName2": null,
+                    "consumerPersonName2": null,
+                    "consumerPhone2": null,
+                    "consumerEmail2": null,
 
-                  "taxInvoiceTradeLineItems": [
-                      {
-                          "itemSupplyDate": "20211013",
-                          "itemName": "DevExpress DXperience",
-                          "itemInformation": "DevExpress DXperience Subscription",
-                          "itemQuantity": 2,
-                          "itemUnitPrice": 1880000,
-                          "itemSupplyAmount": 3760000,
-                          "itemDescription": ""
-                      },
-                      {
-                          "itemSupplyDate": "20211013",
-                          "itemName": "Infragistics Professional",
-                          "itemInformation": "Infragistics Professional Subscription",
-                          "itemQuantity": 1,
-                          "itemUnitPrice": 1419000,
-                          "itemSupplyAmount": 1419000,
-                          "itemDescription": ""
-                      }
-                  ]
-                }
+                    "taxInvoiceTradeLineItems": [
+                        {
+                            "itemSupplyDate": "20211013",
+                            "itemName": "DevExpress DXperience",
+                            "itemInformation": "DevExpress DXperience Subscription",
+                            "itemQuantity": 2,
+                            "itemUnitPrice": 1880000,
+                            "itemSupplyAmount": 3760000,
+                            "itemDescription": ""
+                        },
+                        {
+                            "itemSupplyDate": "20211013",
+                            "itemName": "Infragistics Professional",
+                            "itemInformation": "Infragistics Professional Subscription",
+                            "itemQuantity": 1,
+                            "itemUnitPrice": 1419000,
+                            "itemSupplyAmount": 1419000,
+                            "itemDescription": ""
+                        }
+                    ]
+                  }
+                ]
   responses:
     200Ok:
       description: OK
@@ -711,13 +712,57 @@ components:
               msg:
                 description: 응답메시지
                 type: String
+              data:
+                description: "조회 결과 데이터(Response sample 참조)"
+                type: Object
           examples:
             result:
               value:
                 {
                   "success": true,
                   "code": "SUC001",
-                  "msg": "성공"
+                  "msg": "성공",
+                  "data": {
+                    "issueId": "2021110441000225anihmmtb",
+                    "resultStatusCode": "SUC001"
+                  }
+                }
+    200OkArray:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                description: 응답성공여부
+                type: Boolean
+              code:
+                description: 응답코드(결과코드 참조)
+                type: String
+              msg:
+                description: 응답메시지
+                type: String
+              data:
+                description: "조회 결과 데이터(Response sample 참조)"
+                type: ArrayList
+          examples:
+            result:
+              value:
+                {
+                  "success": true,
+                  "code": "SUC001",
+                  "msg": "성공",
+                  "data": [
+                    {
+                        "issueId": "2021110441000225giddyycn",
+                        "resultStatusCode": "SUC001"
+                    },
+                    {
+                        "issueId": "2021110441000225ufvbwswr",
+                        "resultStatusCode": "SYN004"
+                    }
+                  ]
                 }
     200OkList:
       description: OK
