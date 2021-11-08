@@ -392,6 +392,81 @@ paths:
                       "error": "Internal Server Error",
                       "path": "/v1/tax-invoice/issue/2021091641000225bslatseb"
                     }
+  /etaxbill-service/v1/cloud/download/originXML/{issueId}:
+    get:
+      servers:
+        - url: http://tax.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 계산서 XML원본 다운로드
+      description: 계산서 원본XML파일을 다운로드 한다.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          example: "Bearer <TOKEN>"
+        - name: X-Client-Id
+          in: header
+          description: 사용자 아이디(24자리)
+          required: true
+          schema:
+            type: String
+        - name: issueId
+          in: path
+          description: 승인번호
+          schema:
+            type: String
+      responses:
+        200:
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type:
+              examples:
+                result:
+                  value: |
+                    <TaxInvoice xmlns="urn:kr:or:kec:standard:Tax:ReusableAggregateBusinessInformationEntitySchemaModule:1:0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:kr:or:kec:standard:Tax:ReusableAggregateBusinessInformationEntitySchemaModule:1:0 http://www.kec.or.kr/standard/Tax/TaxInvoiceSchemaModule_1.0.xsd">
+                      <ExchangedDocument>
+                          ...
+                      </ExchangedDocument>
+                      <TaxInvoiceDocument>
+                          <IssueID>2021110841000225xwcunryt</IssueID>
+                          <TypeCode>0101</TypeCode>
+                          <DescriptionText>이 문서는 일반 전자세금계산서 문서입니다.</DescriptionText>
+                          <IssueDateTime>20211108</IssueDateTime>
+                          <PurposeCode>01</PurposeCode>
+                      </TaxInvoiceDocument>
+                      <TaxInvoiceTradeSettlement>
+                          <InvoicerParty>
+                              ...
+                          </InvoicerParty>
+                          <InvoiceeParty>
+                              ...
+                          </InvoiceeParty>
+                          <SpecifiedPaymentMeans>
+                              <TypeCode>10</TypeCode>
+                              <PaidAmount>696900</PaidAmount>
+                          </SpecifiedPaymentMeans>
+                          <SpecifiedPaymentMeans>
+                              <TypeCode>40</TypeCode>
+                              <PaidAmount>5000000</PaidAmount>
+                          </SpecifiedPaymentMeans>
+                          <SpecifiedMonetarySummation>
+                              <ChargeTotalAmount>5179000</ChargeTotalAmount>
+                              <TaxTotalAmount>517900</TaxTotalAmount>
+                              <GrandTotalAmount>5696900</GrandTotalAmount>
+                          </SpecifiedMonetarySummation>
+                      </TaxInvoiceTradeSettlement>
+                      <TaxInvoiceTradeLineItem>
+                          ...
+                      </TaxInvoiceTradeLineItem>
+                      <TaxInvoiceTradeLineItem>
+                          ...
+                      </TaxInvoiceTradeLineItem>
+                    </TaxInvoice>
 components:
   requestBodies:
     Login:
