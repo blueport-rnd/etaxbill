@@ -1362,7 +1362,7 @@ components:
           description: 공급받는자 담당부서명1
           type: String
         consumerPersonName1:
-          description: 공급받는자 담당부서명2
+          description: 공급받는자 담당자명1
           type: String
         consumerPhone1:
           description: 공급받는자 담당자 전화번호1
