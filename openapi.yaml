@@ -71,7 +71,7 @@ paths:
   /user-service/login:
     post:
       servers:
-        - url: http://tax.blueport.co.kr:8443
+        - url: https://tax.blueport.co.kr:8443
       tags:
         - 인증
       summary: 인증토큰발급
@@ -89,7 +89,7 @@ paths:
   /etaxbill-service/v1/health-check:
     get:
       servers:
-        - url: http://tax.blueport.co.kr:8443
+        - url: https://tax.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 서버상태체크
@@ -119,7 +119,7 @@ paths:
         - lang: 'Javascript'
           source: |
             $.ajax({
-              url: 'http://tax.blueport.co.kr:8443/etaxbill-service/v1/health-check',
+              url: 'https://tax.blueport.co.kr:8443/etaxbill-service/v1/health-check',
               type: 'GET',
               contentType: 'application/json'
               headers: {
@@ -139,7 +139,7 @@ paths:
   /etaxbill-service/v1/tax-invoice/issue:
     post:
       servers:
-        - url: http://tax.blueport.co.kr:8443
+        - url: https://tax.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 계산서 발행
@@ -180,7 +180,7 @@ paths:
   /etaxbill-service/v1/tax-invoice/batch/issue:
     post:
       servers:
-        - url: http://tax.blueport.co.kr:8443
+        - url: https://tax.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 계산서 일괄 발행
@@ -221,7 +221,7 @@ paths:
   /etaxbill-service/v1/tax-invoice/issue/list:
     get:
       servers:
-        - url: http://tax.blueport.co.kr:8443
+        - url: https://tax.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 계산서 목록 조회
@@ -351,7 +351,7 @@ paths:
   /etaxbill-service/v1/tax-invoice/issue/{issueId}:
     get:
       servers:
-        - url: http://tax.blueport.co.kr:8443
+        - url: https://tax.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 계산서 상세 조회
@@ -395,7 +395,7 @@ paths:
   /etaxbill-service/v1/cloud/download/originXML/{issueId}:
     get:
       servers:
-        - url: http://tax.blueport.co.kr:8443
+        - url: https://tax.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 계산서 XML원본 다운로드
