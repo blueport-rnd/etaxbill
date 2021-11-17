@@ -76,8 +76,26 @@ paths:
         - 인증
       summary: 인증토큰발급
       description: API 사용자 인증을 받기 위한 토큰을 발급받는다.<p>response header에 `token` 값으로 반환된다.
-      requestBody:
-        $ref: "#/components/requestBodies/Login"
+      # requestBody:
+      #   $ref: "#/components/requestBodies/Login"
+      x-codeSamples:
+        - lang: 'Javascript'
+          source: |
+            $.ajax({
+                url: 'https://tax.blueport.co.kr:8443/user-service/login',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({                          // 데이터 직렬화
+                    "email": "이메일주소",
+                    "password": "패스워드"
+                })
+            }).complete(function(data) {
+                console.log(data);                              // response
+                console.log(data.status);                       // HttpStatus code
+                console.log(data.responseJSON);                 // json data
+                console.log(data.getResponseHeader('token'));   // header token value
+                console.log(data.getAllResponseHeaders());      // all headers
+            });
       responses:
         200:
           description: OK
@@ -119,22 +137,22 @@ paths:
         - lang: 'Javascript'
           source: |
             $.ajax({
-              url: 'https://tax.blueport.co.kr:8443/etaxbill-service/v1/health-check',
-              type: 'GET',
-              contentType: 'application/json'
-              headers: {
-                  'Authorization': 'Bearer <token>',
-                  'X-Client-Id': 'abcdefg1234567890hijklmn'
-              },
-              data: {
-                
-              }
-              success: function (result) {
-                  // CallBack(result);
-              },
-              error: function (error) {
-
-              }
+                url: 'https://tax.blueport.co.kr:8443/etaxbill-service/v1/health-check',
+                type: 'GET',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': 'Bearer 토큰값',
+                    'X-Client-Id': '클라이언트 아이디'
+                },
+            }).complete(function(data) {
+                console.log(data);                      // response
+                console.log(data.status);               // HttpStatus code
+                if(data.status == 200) {  // 성공 시 text 값 반환 (다른 API에서는 json 값 반환)
+                    console.log(data.responseText);     // text data
+                } else {                  // 예외발생 시
+                    console.log(data.responseJSON);     // json data
+                    console.log(data.responseJSON.code);
+                }
             });
   /etaxbill-service/v1/tax-invoice/issue:
     post:
