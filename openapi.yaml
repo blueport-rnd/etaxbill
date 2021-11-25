@@ -117,7 +117,7 @@ paths:
           in: header
           required: true
           schema:
-            type: string
+            type: String
           example: "Bearer <TOKEN>"
         - name: X-Client-Id
           in: header
@@ -167,7 +167,7 @@ paths:
           in: header
           required: true
           schema:
-            type: string
+            type: String
           example: "Bearer <TOKEN>"
         - name: X-Client-Id
           in: header
@@ -208,7 +208,7 @@ paths:
           in: header
           required: true
           schema:
-            type: string
+            type: String
           example: "Bearer <TOKEN>"
         - name: X-Client-Id
           in: header
@@ -249,7 +249,7 @@ paths:
           in: header
           required: true
           schema:
-            type: string
+            type: String
           example: "Bearer <TOKEN>"
         - name: X-Client-Id
           in: header
@@ -379,7 +379,7 @@ paths:
           in: header
           required: true
           schema:
-            type: string
+            type: String
           example: "Bearer <TOKEN>"
         - name: X-Client-Id
           in: header
@@ -423,7 +423,7 @@ paths:
           in: header
           required: true
           schema:
-            type: string
+            type: String
           example: "Bearer <TOKEN>"
         - name: X-Client-Id
           in: header
@@ -1265,7 +1265,7 @@ components:
       properties:
         requestId:
           description: 전자(세금)계산서 발행 요청 시스템(Client)에서 부여하는 식별체계
-          type: String
+          type: String <Unique>
         invoiceTypeCode:
           description: '세금계산서종류 (분류2자리 + 종류2자리 = 4자리코드)<br> 분류 - 01:세금계산서, 02:수정세금계산서, 03:계산서, 04:수정계산서<br/> 종류 - 01:일반, 02:영세율, 03:위수탁, 04:수입, 05:영세율위수탁, 06:수입납부유예'
           type: String
