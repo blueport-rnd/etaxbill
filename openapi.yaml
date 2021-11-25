@@ -510,6 +510,7 @@ components:
             전자세금계산서:
               value:
                 {
+                  "requestId": "1234567890",
                   "invoiceTypeCode": "0101",
                   "writeDate": "20211013",
                   "supplyAmount": 5179000,
@@ -655,6 +656,7 @@ components:
               value:
                 [
                   {
+                    "requestId": "1234567890",
                     "invoiceTypeCode": "0201",
                     "writeDate": "20211013",
                     "supplyAmount": 5179000,
@@ -723,6 +725,7 @@ components:
                     ]
                   },
                   {
+                    "requestId": "2345678901",
                     "invoiceTypeCode": "0401",
                     "writeDate": "20211013",
                     "supplyAmount": 5179000,
@@ -816,6 +819,7 @@ components:
                   "code": "SUC001",
                   "msg": "성공",
                   "data": {
+                    "requestId": "1234567890",
                     "issueId": "2021110441000225anihmmtb",
                     "resultStatusCode": "SUC001"
                   }
@@ -848,12 +852,14 @@ components:
                   "msg": "성공",
                   "data": [
                     {
-                        "issueId": "2021110441000225giddyycn",
-                        "resultStatusCode": "SUC001"
+                      "requestId": "1234567890",
+                      "issueId": "2021110441000225giddyycn",
+                      "resultStatusCode": "SUC001"
                     },
                     {
-                        "issueId": "2021110441000225ufvbwswr",
-                        "resultStatusCode": "SYN004"
+                      "requestId": "2345678901",
+                      "issueId": "2021110441000225ufvbwswr",
+                      "resultStatusCode": "SYN004"
                     }
                   ]
                 }
@@ -1257,6 +1263,9 @@ components:
         - consumerCompanyName
         - consumerCeoName
       properties:
+        requestId:
+          description: 전자(세금)계산서 발행 요청 시스템(Client)에서 부여하는 식별체계
+          type: String
         invoiceTypeCode:
           description: '세금계산서종류 (분류2자리 + 종류2자리 = 4자리코드)<br> 분류 - 01:세금계산서, 02:수정세금계산서, 03:계산서, 04:수정계산서<br/> 종류 - 01:일반, 02:영세율, 03:위수탁, 04:수입, 05:영세율위수탁, 06:수입납부유예'
           type: String
