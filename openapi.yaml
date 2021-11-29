@@ -46,6 +46,7 @@ tags:
         - `SYS101`  인증서 암호 불일치 오류
         - `SYS102`  유효하지 않은 인증서 오류
         - `SYS103`  전자(세금)계산서 접수 오류
+        - `SYS104`  존재하지 않는 RequestId 오류
         - `SYN001`  인증서 복호화 실패
         - `SYN002`  공급사업자, 수탁자 전자서명 오류
         - `SYN003`  승인번호 중복 오류
@@ -60,6 +61,8 @@ tags:
         - `ERR009`  폐업사업자 발급 오류
         - `ERR010`  국세청 등록번호 오류
         - `ERR011`  당초승인번호 오류
+        - `ERR101`  이메일 전송 실패
+        - `ERR102`  전자(세금)계산서 영수증 생성 실패
         - `ERR999`  정의되지 않은 기타오류
 
 #x-tagGroups:
@@ -389,6 +392,7 @@ paths:
             type: String
         - name: issueId
           in: path
+          required: true
           description: 승인번호
           schema:
             type: String
@@ -485,6 +489,167 @@ paths:
                           ...
                       </TaxInvoiceTradeLineItem>
                     </TaxInvoice>
+  /etaxbill-service/v1/tax-invoice/issueResult/{requestId}:
+    get:
+      servers:
+        - url: https://tax.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 계산서 발행결과 조회
+      description: 클라이언트에서 발행한 요청 아이디로 계산서 발행결과를 조회한다.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: String
+          example: "Bearer <TOKEN>"
+        - name: X-Client-Id
+          in: header
+          description: 사용자 아이디(24자리)
+          required: true
+          schema:
+            type: String
+        - name: requestId
+          in: path
+          required: true
+          description: 요청번호
+          schema:
+            type: String
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/200OkResult"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": true,
+                        "code": "SUC001",
+                        "msg": "성공",
+                        "data": {
+                            "requestId": "20211125-001",
+                            "issueId": "2021112541000225qptniogl",
+                            "resultStatusCode": "SUC001"
+                        }
+                    }
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400BadRequest"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": false,
+                        "code": "SYS104",
+                        "msg": "존재하지 않는 RequestId 오류"
+                    }
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500InternalServerError"
+              examples:
+                result:
+                  value:
+                    {
+                      "timestamp": "2021-10-07T09:21:02.914+00:00",
+                      "status": 500,
+                      "error": "Internal Server Error",
+                      "path": "/v1/tax-invoice/issueResult/20211125-001"
+                    }
+  /etaxbill-service/v1/tax-invoice/batch/issueResult/list:
+    get:
+      servers:
+        - url: https://tax.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 계산서 발행결과 일괄 조회
+      description: 클라이언트에서 발행한 요청 아이디로 계산서 발행결과를 일괄조회 한다.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: String
+          example: "Bearer <TOKEN>"
+        - name: X-Client-Id
+          in: header
+          description: 사용자 아이디(24자리)
+          required: true
+          schema:
+            type: String
+        - name: requestIds
+          in: query
+          required: true
+          description: 요청아이디목록( ','로 구분)
+          schema:
+            type: String
+            example: 20211125-001,20211125-003
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/200OkResultList"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": true,
+                        "code": "SUC001",
+                        "msg": "성공",
+                        "data": [
+                            {
+                                "requestId": "20211125-001",
+                                "issueId": "2021112541000225qptniogl",
+                                "resultStatusCode": "SUC001"
+                            },
+                            {
+                                "requestId": "20211125-003",
+                                "issueId": null,
+                                "resultStatusCode": "SYS104"
+                            }
+                        ]
+                    }
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400BadRequest"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": false,
+                        "code": "SYS104",
+                        "msg": "존재하지 않는 RequestId 오류"
+                    }
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500InternalServerError"
+              examples:
+                result:
+                  value:
+                    {
+                      "timestamp": "2021-10-07T09:21:02.914+00:00",
+                      "status": 500,
+                      "error": "Internal Server Error",
+                      "path": "/v1/tax-invoice/batch/issueResult/list"
+                    }
+
 components:
   requestBodies:
     Login:
@@ -1212,28 +1377,6 @@ components:
                       ]
                   }
                 }
-    500InternalServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              timestamp:
-                description: 오류발생시각
-                type: String
-                format: DateTime
-              status:
-                description: 상태코드
-                type: Integer
-                example: 500
-              error:
-                description: 오류명
-                type: String
-                example: Internal Server Error
-              path:
-                description: 요청경로
-                type: String
 
 # 데이터 모델 정의
   schemas:
@@ -1487,7 +1630,48 @@ components:
           type: String
       xml:
         name: TaxInvoiceTradeLineItems
-
+    200OkResult:
+      type: object
+      properties:
+        success:
+          description: 응답성공여부
+          type: Boolean
+        code:
+          description: 응답코드(결과코드 참조)
+          type: String
+        msg:
+          description: 응답메시지
+          type: String
+        data:
+          description: "조회 결과 데이터(Response sample 참조)"
+          type: Object
+    200OkResultList:
+      type: object
+      properties:
+        success:
+          description: 응답성공여부
+          type: Boolean
+        code:
+          description: 응답코드(결과코드 참조)
+          type: String
+        msg:
+          description: 응답메시지
+          type: String
+        data:
+          description: "조회 결과 데이터(Response sample 참조)"
+          type: ArrayList
+    400BadRequest:
+      type: object
+      properties:
+        success:
+          description: 응답성공여부
+          type: Boolean
+        code:
+          description: 응답코드(결과코드 참조)
+          type: String
+        msg:
+          description: 응답메시지
+          type: String
     500InternalServerError:
       type: object
       properties:
