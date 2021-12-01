@@ -183,6 +183,20 @@ paths:
       responses:
         200:
           $ref: "#/components/responses/200Ok"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400BadRequest"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": false,
+                        "code": "SYN004",
+                        "msg": "전자(세금)계산서 스키마 오류"
+                    }
         500:
           description: Internal Server Error
           content:
@@ -224,6 +238,20 @@ paths:
       responses:
         200:
           $ref: "#/components/responses/200OkArray"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400BadRequest"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": false,
+                        "code": "SYN004",
+                        "msg": "전자(세금)계산서 스키마 오류"
+                    }
         500:
           description: Internal Server Error
           content:
