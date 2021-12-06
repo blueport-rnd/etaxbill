@@ -74,7 +74,7 @@ paths:
   /user-service/login:
     post:
       servers:
-        - url: https://tax.blueport.co.kr:8443
+        - url: https://taxtest.blueport.co.kr:8443
       tags:
         - 인증
       summary: 인증토큰발급
@@ -85,7 +85,7 @@ paths:
         - lang: 'Javascript'
           source: |
             $.ajax({
-                url: 'https://tax.blueport.co.kr:8443/user-service/login',
+                url: 'https://taxtest.blueport.co.kr:8443/user-service/login',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({                          // 데이터 직렬화
@@ -110,7 +110,7 @@ paths:
   /etaxbill-service/v1/health-check:
     get:
       servers:
-        - url: https://tax.blueport.co.kr:8443
+        - url: https://taxtest.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 서버상태체크
@@ -140,7 +140,7 @@ paths:
         - lang: 'Javascript'
           source: |
             $.ajax({
-                url: 'https://tax.blueport.co.kr:8443/etaxbill-service/v1/health-check',
+                url: 'https://taxtest.blueport.co.kr:8443/etaxbill-service/v1/health-check',
                 type: 'GET',
                 contentType: 'application/json',
                 headers: {
@@ -160,7 +160,7 @@ paths:
   /etaxbill-service/v1/tax-invoice/issue:
     post:
       servers:
-        - url: https://tax.blueport.co.kr:8443
+        - url: https://taxtest.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 계산서 발행
@@ -215,7 +215,7 @@ paths:
   /etaxbill-service/v1/tax-invoice/batch/issue:
     post:
       servers:
-        - url: https://tax.blueport.co.kr:8443
+        - url: https://taxtest.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 계산서 일괄 발행
@@ -270,7 +270,7 @@ paths:
   /etaxbill-service/v1/tax-invoice/issue/list:
     get:
       servers:
-        - url: https://tax.blueport.co.kr:8443
+        - url: https://taxtest.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 계산서 목록 조회
@@ -400,7 +400,7 @@ paths:
   /etaxbill-service/v1/tax-invoice/issue/{issueId}:
     get:
       servers:
-        - url: https://tax.blueport.co.kr:8443
+        - url: https://taxtest.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 계산서 상세 조회
@@ -445,7 +445,7 @@ paths:
   /etaxbill-service/v1/cloud/download/originXML/{issueId}:
     get:
       servers:
-        - url: https://tax.blueport.co.kr:8443
+        - url: https://taxtest.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 계산서 XML원본 다운로드
@@ -520,7 +520,7 @@ paths:
   /etaxbill-service/v1/tax-invoice/issueResult/{requestId}:
     get:
       servers:
-        - url: https://tax.blueport.co.kr:8443
+        - url: https://taxtest.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 계산서 발행결과 조회
@@ -596,7 +596,7 @@ paths:
   /etaxbill-service/v1/tax-invoice/batch/issueResult/list:
     get:
       servers:
-        - url: https://tax.blueport.co.kr:8443
+        - url: https://taxtest.blueport.co.kr:8443
       tags:
         - 전자(세금)계산서
       summary: 계산서 발행결과 일괄 조회
