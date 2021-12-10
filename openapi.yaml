@@ -561,6 +561,7 @@ paths:
                         "data": {
                             "requestId": "20211125-001",
                             "issueId": "2021112541000225qptniogl",
+                            "issueDate": "20211125103833",
                             "resultStatusCode": "SUC001"
                         }
                     }
@@ -639,12 +640,20 @@ paths:
                             {
                                 "requestId": "20211125-001",
                                 "issueId": "2021112541000225qptniogl",
+                                "issueDate": "20211125103833",
                                 "resultStatusCode": "SUC001"
                             },
                             {
                                 "requestId": "20211125-003",
                                 "issueId": null,
+                                "issueDate": "20211125103834",
                                 "resultStatusCode": "SYS104"
+                            },
+                            {
+                                "requestId": "20211125-005",
+                                "issueId": 2021112541000225qptniedl,
+                                "issueDate": "20211125103835",
+                                "resultStatusCode": null
                             }
                         ]
                     }
@@ -1013,7 +1022,8 @@ components:
                   "msg": "성공",
                   "data": {
                     "requestId": "1234567890",
-                    "issueId": "2021110441000225anihmmtb",
+                    "issueId": "2021121041000225anihmmtb",
+                    "issueDate": "20211210103833",
                     "resultStatusCode": "SUC001"
                   }
                 }
@@ -1046,12 +1056,14 @@ components:
                   "data": [
                     {
                       "requestId": "1234567890",
-                      "issueId": "2021110441000225giddyycn",
+                      "issueId": "2021121041000225giddyycn",
+                      "issueDate": "20211210103833",
                       "resultStatusCode": "SUC001"
                     },
                     {
                       "requestId": "2345678901",
-                      "issueId": "2021110441000225ufvbwswr",
+                      "issueId": "2021121041000225ufvbwswr",
+                      "issueDate": "20211210103833",
                       "resultStatusCode": "SYN004"
                     }
                   ]
