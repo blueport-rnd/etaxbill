@@ -91,13 +91,14 @@ paths:
                 data: JSON.stringify({                          // 데이터 직렬화
                     "email": "이메일주소",
                     "password": "패스워드"
-                })
-            }).complete(function(data) {
-                console.log(data);                              // response
-                console.log(data.status);                       // HttpStatus code
-                console.log(data.responseJSON);                 // json data
-                console.log(data.getResponseHeader('token'));   // header token value
-                console.log(data.getAllResponseHeaders());      // all headers
+                }),
+                complete(function(data) {
+                  console.log(data);                              // response
+                  console.log(data.status);                       // HttpStatus code
+                  console.log(data.responseJSON);                 // json data
+                  console.log(data.getResponseHeader('token'));   // header token value
+                  console.log(data.getAllResponseHeaders());      // all headers
+                }
             });
       responses:
         200:
@@ -105,6 +106,10 @@ paths:
           headers:
             token:
               description: 인증토큰 (유효기간 1일)
+              schema:
+                type: String
+            X-Client-Id:
+              description: 사용자(고객)아이디
               schema:
                 type: String
   /etaxbill-service/v1/health-check:
@@ -147,14 +152,15 @@ paths:
                     'Authorization': 'Bearer 토큰값',
                     'X-Client-Id': '클라이언트 아이디'
                 },
-            }).complete(function(data) {
-                console.log(data);                      // response
-                console.log(data.status);               // HttpStatus code
-                if(data.status == 200) {  // 성공 시 text 값 반환 (다른 API에서는 json 값 반환)
-                    console.log(data.responseText);     // text data
-                } else {                  // 예외발생 시
-                    console.log(data.responseJSON);     // json data
-                    console.log(data.responseJSON.code);
+                complete(function(data) {
+                  console.log(data);                      // response
+                  console.log(data.status);               // HttpStatus code
+                  if(data.status == 200) {  // 성공 시 text 값 반환 (다른 API에서는 json 값 반환)
+                      console.log(data.responseText);     // text data
+                  } else {                  // 예외발생 시
+                      console.log(data.responseJSON);     // json data
+                      console.log(data.responseJSON.code);
+                  }
                 }
             });
   /etaxbill-service/v1/tax-invoice/issue:
