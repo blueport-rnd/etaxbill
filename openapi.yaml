@@ -746,6 +746,7 @@ components:
                   "supplierPersonName": null,
                   "supplierPhone": null,
                   "supplierEmail": "abc@blueport.co.kr",
+                  "supplierCCEmail": null,
 
                   "consumerBusinessId": "1234567890",
                   "consumerTaxRegistrationId": null,
@@ -762,6 +763,7 @@ components:
                   "consumerPersonName2": null,
                   "consumerPhone2": null,
                   "consumerEmail2": null,
+                  "consumerCCEmail": null,
 
                   "taxInvoiceTradeLineItems": [
                       {
@@ -815,6 +817,7 @@ components:
                   "supplierPersonName": null,
                   "supplierPhone": null,
                   "supplierEmail": "abc@blueport.co.kr",
+                  "supplierCCEmail": null,
 
                   "consumerBusinessId": "1234567890",
                   "consumerTaxRegistrationId": null,
@@ -831,6 +834,7 @@ components:
                   "consumerPersonName2": null,
                   "consumerPhone2": null,
                   "consumerEmail2": null,
+                  "consumerCCEmail": null,
 
                   "taxInvoiceTradeLineItems": [
                       {
@@ -892,6 +896,7 @@ components:
                     "supplierPersonName": null,
                     "supplierPhone": null,
                     "supplierEmail": "abc@blueport.co.kr",
+                    "supplierCCEmail": null,
 
                     "consumerBusinessId": "1234567890",
                     "consumerTaxRegistrationId": null,
@@ -908,6 +913,7 @@ components:
                     "consumerPersonName2": null,
                     "consumerPhone2": null,
                     "consumerEmail2": null,
+                    "consumerCCEmail": null,
 
                     "taxInvoiceTradeLineItems": [
                         {
@@ -960,6 +966,7 @@ components:
                     "supplierPersonName": null,
                     "supplierPhone": null,
                     "supplierEmail": "abc@blueport.co.kr",
+                    "supplierCCEmail": null,
 
                     "consumerBusinessId": "1234567890",
                     "consumerTaxRegistrationId": null,
@@ -976,6 +983,7 @@ components:
                     "consumerPersonName2": null,
                     "consumerPhone2": null,
                     "consumerEmail2": null,
+                    "consumerCCEmail": null,
 
                     "taxInvoiceTradeLineItems": [
                         {
@@ -1553,6 +1561,9 @@ components:
         supplierEmail:
           description: 공급자 이메일 
           type: String
+        supplierCCEmail:
+          description: 공급자 참조 이메일 (' , '로 복수 이메일 구분 )
+          type: String
         consumerBusinessId:
           description: "공급받는자 등록번호<br/>사업자등록번호 형식: nnnnnnnnnn ( - 불포함, 10byte)<br/>개인 주민번호 형식: nnnnnnnnnnnnn ( - 불포함, 13byte)<br/>외국인 형식: 9999999999999(고정값)<br/> (비고에 여권번호 및 외국인등록번호 등을 기재)"
           type: String
@@ -1597,6 +1608,9 @@ components:
           type: String
         consumerEmail2:
           description: 공급받는자 담당자 이메일2
+          type: String
+        consumerCCEmail:
+          description: 공급받는자 참조 이메일 (' , '로 복수 이메일 구분 )
           type: String
         brokerBusinessId:
           description: 수탁사업자 등록번호
