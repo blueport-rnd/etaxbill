@@ -20,7 +20,7 @@ info:
     url: #'http://www.apache.org/licenses/LICENSE-2.0.html'
 externalDocs:
   description: 
-  url: 
+  url:
 tags:
   - name: 인증
     description: |
@@ -692,7 +692,7 @@ paths:
                       "error": "Internal Server Error",
                       "path": "/v1/tax-invoice/batch/issueResult/list"
                     }
-  /mail-service/v1/email/taxInvoice/send:
+  /email-service/v1/email/taxInvoice/send:
     put:
       servers:
         - url: https://taxtest.blueport.co.kr:8443
@@ -771,7 +771,7 @@ paths:
                       "error": "Internal Server Error",
                       "path": "/v1/email/taxInvoice/send"
                     }
-  /mail-service/v1/email/batch/taxInvoice/send:
+  /email-service/v1/email/batch/taxInvoice/send:
     put:
       servers:
         - url: https://taxtest.blueport.co.kr:8443
