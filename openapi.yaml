@@ -692,6 +692,171 @@ paths:
                       "error": "Internal Server Error",
                       "path": "/v1/tax-invoice/batch/issueResult/list"
                     }
+  /mail-service/v1/email/taxInvoice/send:
+    put:
+      servers:
+        - url: https://taxtest.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 이메일 재전송
+      description: 발급된 계산서 영수증 이메일을 재전송 한다.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: String
+          example: "Bearer <TOKEN>"
+        - name: X-Client-Id
+          in: header
+          description: 사용자 아이디(24자리)
+          required: true
+          schema:
+            type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/taxInvoiceEmail"
+            examples:
+              sample:
+                value:
+                  {
+                      "issueId": "2021121741000225atsbcxee",
+                      "target": "공급받는자",
+                      "toAddress": "abc@email.com, def@email.com"
+                  }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/200OkSimple"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": true,
+                        "code": "SUC001",
+                        "msg": "성공"
+                    }
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400BadRequest"
+              examples:
+                result:
+                  value:
+                    {
+                      "success": false,
+                      "code": "ERR101",
+                      "msg": "이메일 전송 정보 오류"
+                    }
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500InternalServerError"
+              examples:
+                result:
+                  value:
+                    {
+                      "timestamp": "2021-12-17T09:21:02.914+00:00",
+                      "status": 500,
+                      "error": "Internal Server Error",
+                      "path": "/v1/email/taxInvoice/send"
+                    }
+  /mail-service/v1/email/batch/taxInvoice/send:
+    put:
+      servers:
+        - url: https://taxtest.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 이메일 일괄 재전송
+      description: 발급된 계산서 영수증 이메일을 일괄 재전송 한다.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: String
+          example: "Bearer <TOKEN>"
+        - name: X-Client-Id
+          in: header
+          description: 사용자 아이디(24자리)
+          required: true
+          schema:
+            type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/taxInvoiceEmail"
+            examples:
+              sample:
+                value:
+                  [
+                    {
+                        "issueId": "2021121741000225dtskwxee",
+                        "target": "공급자",
+                        "toAddress": "abc@email.com,def@email.com"
+                    },
+                    {
+                        "issueId": "2021121741000225atsbcxee",
+                        "target": "공급받는자",
+                        "toAddress": "abc@email.com, def@email.com"
+                    }
+                  ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/200OkSimple"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": true,
+                        "code": "SUC001",
+                        "msg": "성공"
+                    }
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400BadRequest"
+              examples:
+                result:
+                  value:
+                    {
+                      "success": false,
+                      "code": "ERR101",
+                      "msg": "이메일 전송 정보 오류"
+                    }
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500InternalServerError"
+              examples:
+                result:
+                  value:
+                    {
+                      "timestamp": "2021-12-17T09:21:02.914+00:00",
+                      "status": 500,
+                      "error": "Internal Server Error",
+                      "path": "/v1/email/batch/taxInvoice/send"
+                    }
 
 components:
   requestBodies:
@@ -1690,6 +1855,22 @@ components:
           type: String
       xml:
         name: TaxInvoiceTradeLineItems
+
+    taxInvoiceEmail:
+      type: object
+      properties:
+        issueId: 
+          description: 승인번호 24자리
+          type: String
+        target:
+          description: 전송대상 ("공급자" or "공급받는자")
+          type: String
+        toAddress:
+          description: 수신자 메일주소 ( ' , '로 구분)
+          type: String
+        toCCAddress:
+          description: 참조 메일주소 ( ' , '로 구분)
+          type: String
     200OkResult:
       type: object
       properties:
@@ -1720,6 +1901,18 @@ components:
         data:
           description: "조회 결과 데이터(Response sample 참조)"
           type: ArrayList
+    200OkSimple:
+      type: object
+      properties:
+        success:
+          description: 응답성공여부
+          type: Boolean
+        code:
+          description: 응답코드(결과코드 참조)
+          type: String
+        msg:
+          description: 응답메시지
+          type: String
     400BadRequest:
       type: object
       properties:
