@@ -213,10 +213,9 @@ paths:
                 result:
                   value:
                     {
-                      "timestamp": "2021-10-07T08:21:02.914+00:00",
-                      "status": 500,
-                      "error": "Internal Server Error",
-                      "path": "/v1/tax-invoice/issue"
+                      "success": false,
+                      "code": "ERR999",
+                      "msg": "정의되지 않은 기타오류"
                     }
   /etaxbill-service/v1/tax-invoice/batch/issue:
     post:
@@ -268,10 +267,9 @@ paths:
                 result:
                   value:
                     {
-                      "timestamp": "2021-10-07T09:21:02.914+00:00",
-                      "status": 500,
-                      "error": "Internal Server Error",
-                      "path": "/v1/tax-invoice/issue"
+                      "success": false,
+                      "code": "ERR999",
+                      "msg": "정의되지 않은 기타오류"
                     }
   /etaxbill-service/v1/tax-invoice/issue/list:
     get:
@@ -398,10 +396,9 @@ paths:
                 result:
                   value:
                     {
-                      "timestamp": "2021-10-07T09:21:02.914+00:00",
-                      "status": 500,
-                      "error": "Internal Server Error",
-                      "path": "/v1/tax-invoice/issue/list"
+                      "success": false,
+                      "code": "ERR999",
+                      "msg": "정의되지 않은 기타오류"
                     }
   /etaxbill-service/v1/tax-invoice/issue/{issueId}:
     get:
@@ -443,10 +440,9 @@ paths:
                 result:
                   value:
                     {
-                      "timestamp": "2021-10-07T09:21:02.914+00:00",
-                      "status": 500,
-                      "error": "Internal Server Error",
-                      "path": "/v1/tax-invoice/issue/2021091641000225bslatseb"
+                      "success": false,
+                      "code": "ERR999",
+                      "msg": "정의되지 않은 기타오류"
                     }
   /etaxbill-service/v1/cloud/download/originXML/{issueId}:
     get:
@@ -595,10 +591,9 @@ paths:
                 result:
                   value:
                     {
-                      "timestamp": "2021-10-07T09:21:02.914+00:00",
-                      "status": 500,
-                      "error": "Internal Server Error",
-                      "path": "/v1/tax-invoice/issueResult/20211125-001"
+                      "success": false,
+                      "code": "ERR999",
+                      "msg": "정의되지 않은 기타오류"
                     }
   /etaxbill-service/v1/tax-invoice/batch/issueResult/list:
     get:
@@ -687,10 +682,9 @@ paths:
                 result:
                   value:
                     {
-                      "timestamp": "2021-10-07T09:21:02.914+00:00",
-                      "status": 500,
-                      "error": "Internal Server Error",
-                      "path": "/v1/tax-invoice/batch/issueResult/list"
+                      "success": false,
+                      "code": "ERR999",
+                      "msg": "정의되지 않은 기타오류"
                     }
   /email-service/v1/email/taxInvoice/send:
     put:
@@ -766,10 +760,9 @@ paths:
                 result:
                   value:
                     {
-                      "timestamp": "2021-12-17T09:21:02.914+00:00",
-                      "status": 500,
-                      "error": "Internal Server Error",
-                      "path": "/v1/email/taxInvoice/send"
+                      "success": false,
+                      "code": "ERR101",
+                      "msg": "이메일 전송 실패"
                     }
   /email-service/v1/email/batch/taxInvoice/send:
     put:
@@ -852,10 +845,9 @@ paths:
                 result:
                   value:
                     {
-                      "timestamp": "2021-12-17T09:21:02.914+00:00",
-                      "status": 500,
-                      "error": "Internal Server Error",
-                      "path": "/v1/email/batch/taxInvoice/send"
+                      "success": false,
+                      "code": "ERR101",
+                      "msg": "이메일 전송 실패"
                     }
 
 components:
@@ -1925,21 +1917,33 @@ components:
         msg:
           description: 응답메시지
           type: String
+    # 500InternalServerError:
+    #   type: object
+    #   properties:
+    #     timestamp:
+    #       description: 오류발생시각
+    #       type: String
+    #       format: DateTime
+    #     status:
+    #       description: 상태코드
+    #       type: Integer
+    #       example: 500
+    #     error:
+    #       description: 오류명
+    #       type: String
+    #       example: Internal Server Error
+    #     path:
+    #       description: 요청경로
+    #       type: String
     500InternalServerError:
       type: object
       properties:
-        timestamp:
-          description: 오류발생시각
+        success:
+          description: 응답성공여부
+          type: Boolean
+        code:
+          description: 응답코드(결과코드 참조)
           type: String
-          format: DateTime
-        status:
-          description: 상태코드
-          type: Integer
-          example: 500
-        error:
-          description: 오류명
+        msg:
+          description: 응답메시지
           type: String
-          example: Internal Server Error
-        path:
-          description: 요청경로
-          type: String    
