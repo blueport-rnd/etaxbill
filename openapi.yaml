@@ -3,7 +3,7 @@ openapi: 3.0.0
 info:
   description: |
     전자(세금)계산서 애플리케이션 소프트웨어를 구축하고 통합하기 위한 정의 및 프로토콜 세트를 제공합니다.<br/>
-    모든 요청에는 `web-token`을 사용하여 권한이 있는 사용자에게만 액세스를 허용합니다.
+    모든 요청에는 `web-token`을 사용하여 권한이 있는 사용자에게만 액세스를 허용합니다. 
 
   version: 1.0.0
   title: Blueport e-TaxBill API Documentation
@@ -647,7 +647,7 @@ paths:
                             {
                                 "requestId": "20211125-003",
                                 "issueId": null,
-                                "issueDate": "20211125103834",
+                                "issueDate": null,
                                 "resultStatusCode": "SYS104"
                             },
                             {
@@ -849,7 +849,275 @@ paths:
                       "code": "ERR101",
                       "msg": "이메일 전송 실패"
                     }
-
+  /etaxbill-service/v1/tax-invoice/standby/issue:
+    post:
+      servers:
+        - url: https://taxtest.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 계산서 예약발행
+      description: 전자(세금)계산서 예약발행을 등록한다.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: String
+          example: "Bearer <TOKEN>"
+        - name: X-Client-Id
+          in: header
+          description: 사용자 아이디(24자리)
+          required: true
+          schema:
+            type: String
+      requestBody:
+        $ref: "#/components/requestBodies/TaxInvoiceReq"
+      responses:
+        200:
+          $ref: "#/components/responses/200Ok"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400BadRequest"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": false,
+                        "code": "SYN004",
+                        "msg": "전자(세금)계산서 스키마 오류"
+                    }
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500InternalServerError"
+              examples:
+                result:
+                  value:
+                    {
+                      "success": false,
+                      "code": "ERR999",
+                      "msg": "정의되지 않은 기타오류"
+                    }
+  /etaxbill-service/v1/tax-invoice/standby/batch/issue:
+    post:
+      servers:
+        - url: https://taxtest.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 계산서 일괄 예약발행
+      description: 전자(세금)계산서를 예약발행을 일괄등록한다.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: String
+          example: "Bearer <TOKEN>"
+        - name: X-Client-Id
+          in: header
+          description: 사용자 아이디(24자리)
+          required: true
+          schema:
+            type: String
+      requestBody:
+        $ref: "#/components/requestBodies/TaxInvoiceBatchReq"
+      responses:
+        200:
+          $ref: "#/components/responses/200OkArray"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400BadRequest"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": false,
+                        "code": "SYN004",
+                        "msg": "전자(세금)계산서 스키마 오류"
+                    }
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500InternalServerError"
+              examples:
+                result:
+                  value:
+                    {
+                      "success": false,
+                      "code": "ERR999",
+                      "msg": "정의되지 않은 기타오류"
+                    }
+  /etaxbill-service/v1/tax-invoice/standby/issue/{requestId}:
+    delete:
+      servers:
+        - url: https://taxtest.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 계산서 예약발행 취소
+      description: 전자(세금)계산서 예약발행 단 건을 취소한다.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: String
+          example: "Bearer <TOKEN>"
+        - name: X-Client-Id
+          in: header
+          description: 사용자 아이디(24자리)
+          required: true
+          schema:
+            type: String
+        - name: requestId
+          in: path
+          required: true
+          description: 요청번호<br/>- 전자(세금)계산서 발행 요청 시스템(Client)에서 부여하는 식별체계
+          schema:
+            type: String
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/200OkResult"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": true,
+                        "code": "SUC001",
+                        "msg": "성공",
+                        "data": {
+                            "requestId": "20211125-001",
+                            "issueId": null,
+                            "issueDate": null,
+                            "resultStatusCode": "SUC001"
+                        }
+                    }
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400BadRequest"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": false,
+                        "code": "SYS104",
+                        "msg": "존재하지 않는 RequestId 오류"
+                    }
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500InternalServerError"
+              examples:
+                result:
+                  value:
+                    {
+                      "success": false,
+                      "code": "ERR999",
+                      "msg": "정의되지 않은 기타오류"
+                    }
+  /etaxbill-service/v1/tax-invoice/standby/issue/list:
+    delete:
+      servers:
+        - url: https://taxtest.blueport.co.kr:8443
+      tags:
+        - 전자(세금)계산서
+      summary: 계산서 예약발행 일괄취소
+      description: 전자(세금)계산서 예약발행을 일괄 취소한다.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: String
+          example: "Bearer <TOKEN>"
+        - name: X-Client-Id
+          in: header
+          description: 사용자 아이디(24자리)
+          required: true
+          schema:
+            type: String
+        - name: requestIds
+          in: query
+          required: true
+          description: 요청아이디목록( ' , '로 구분)
+          schema:
+            type: String
+            example: 20211125-001,20211125-003
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/200OkResultList"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": true,
+                        "code": "SUC001",
+                        "msg": "성공",
+                        "data": [
+                            {
+                                "requestId": "20211125-001",
+                                "issueId": null,
+                                "issueDate": null,
+                                "resultStatusCode": "SUC001"
+                            },
+                            {
+                                "requestId": "20211125-003",
+                                "issueId": null,
+                                "issueDate": null,
+                                "resultStatusCode": "SYS104"
+                            }
+                        ]
+                    }
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400BadRequest"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": false,
+                        "code": "SYS104",
+                        "msg": "존재하지 않는 RequestId 오류"
+                    }
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500InternalServerError"
+              examples:
+                result:
+                  value:
+                    {
+                      "success": false,
+                      "code": "ERR999",
+                      "msg": "정의되지 않은 기타오류"
+                    }
 components:
   requestBodies:
     Login:
