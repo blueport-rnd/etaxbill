@@ -46,7 +46,8 @@ tags:
         - `SYS101`  인증서 암호 불일치 오류
         - `SYS102`  유효하지 않은 인증서 오류
         - `SYS103`  전자(세금)계산서 접수 오류
-        - `SYS104`  존재하지 않는 RequestId 오류
+        - `SYS104`  존재하지 않는 요청아이디(requestId) 오류
+        - `SYS105`  존재하지 않는 승인번호(issueId) 오류
         - `SYN001`  인증서 복호화 실패
         - `SYN002`  공급사업자, 수탁자 전자서명 오류
         - `SYN003`  승인번호 중복 오류
@@ -957,7 +958,7 @@ paths:
                       "code": "ERR999",
                       "msg": "정의되지 않은 기타오류"
                     }
-  /etaxbill-service/v1/tax-invoice/standby/issue/{requestId}:
+  /etaxbill-service/v1/tax-invoice/standby/issue/{issueId}:
     delete:
       servers:
         - url: https://taxtest.blueport.co.kr:8443
@@ -978,10 +979,10 @@ paths:
           required: true
           schema:
             type: String
-        - name: requestId
+        - name: issueId
           in: path
           required: true
-          description: 요청번호<br/>- 전자(세금)계산서 발행 요청 시스템(Client)에서 부여하는 식별체계
+          description: 승인번호
           schema:
             type: String
       responses:
@@ -1016,8 +1017,8 @@ paths:
                   value:
                     {
                         "success": false,
-                        "code": "SYS104",
-                        "msg": "존재하지 않는 RequestId 오류"
+                        "code": "SYS105",
+                        "msg": "존재하지 않는 승인번호(issueId) 오류"
                     }
         500:
           description: Internal Server Error
@@ -1054,13 +1055,13 @@ paths:
           required: true
           schema:
             type: String
-        - name: requestIds
+        - name: issueIds
           in: query
           required: true
-          description: 요청아이디목록( ' , '로 구분)
+          description: 승인번호목록( ' , '로 구분)
           schema:
             type: String
-            example: 20211125-001,20211125-003
+            example: 2022022141000225tkfuerep,2022022141000225zctgepvu
       responses:
         200:
           description: OK
@@ -1101,8 +1102,8 @@ paths:
                   value:
                     {
                         "success": false,
-                        "code": "SYS104",
-                        "msg": "존재하지 않는 RequestId 오류"
+                        "code": "SYS105",
+                        "msg": "존재하지 않는 승인번호(issueId) 오류"
                     }
         500:
           description: Internal Server Error
