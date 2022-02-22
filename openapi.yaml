@@ -11,7 +11,7 @@ info:
   contact:
     name: API Support
     email: rnd@blueport.co.kr
-    url: https://www.blueport.co.kr
+    url: https://taxtest.blueport.co.kr:9443
   x-logo:
     url: './blueport_logo.png'
     altText: Blueport logo
