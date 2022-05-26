@@ -1,5 +1,5 @@
 openapi: 3.0.0
-
+# 블랙포트 관련 누락된 것 있는지 확인
 info:
   description: |
     전자(세금)계산서 애플리케이션 소프트웨어를 구축하고 통합하기 위한 정의 및 프로토콜 세트를 제공합니다.<br/>
@@ -29,6 +29,8 @@ tags:
         - `X-Client-Id` 회원가입 시 발급받은 사용자 아이디
   - name: 전자(세금)계산서
     description: 전자(세금)계산서 발행 및 조회
+  - name: 인증서
+    description: 전자(세금)계산서용 인증서 등록 및 정보조회
   - name: 인증오류코드
     description: |
       인증에 관련된 오류 응답코드 정의
@@ -1290,6 +1292,171 @@ paths:
                       "code": "ERR999",
                       "msg": "정의되지 않은 기타오류"
                     }
+  /etaxbill-service/v1/certificate/registry:
+    post:
+      servers:
+        - url: https://taxtest.blueport.co.kr:8443
+      tags:
+        - 인증서
+      summary: 인증서 등록
+      description: 전자(세금)계산서용 인증서를 등록한다. (인증서, 개인키)
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: String
+          example: "Bearer <TOKEN>"
+        - name: X-Client-Id
+          in: header
+          description: 사용자 아이디(24자리)
+          required: true
+          schema:
+            type: String
+      requestBody:
+        required: true
+        content:
+          form-data:
+            schema:
+              $ref: "#/components/schemas/taxInvoiceCertification"
+            examples:
+              result:
+                  value: |
+                    <form id="fileForm" method="post" enctype="multipart/form-data">
+                      <!-- 파일 순서 상관없이 확장자로 구별 (.key or not) -->
+                      인증서: <input type="file" name="files">
+                      개인키: <input type="file" name="files">
+                      인증서비밀번호: <input type="password" name="password">
+                      인증서비밀번호확인: <input type="password" name="passwordConfirm">
+                    </form>
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/200OkSimple"
+              examples:
+                result:
+                  value:
+                    {
+                        "success": true,
+                        "code": "SUC001",
+                        "msg": "성공"
+                    }
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400BadRequest"
+              examples:
+                result:
+                  value:
+                    {
+                      "success": false,
+                      "code": "SYS102",
+                      "msg": "인증서 검증 실패 오류"
+                    }
+      x-codeSamples:
+        - lang: 'Javascript'
+          source: |
+            var form = $('#fileForm')[0];
+            var formData = new FormData(form);
+            $.ajax({ 
+              type: "POST", 
+              enctype: 'multipart/form-data', // 필수 
+              url: API_SERVER + '/etaxbill-service/v1/certificate/registry',
+              data: formData, // 필수 
+              processData: false, // 필수 
+              contentType: false, // 필수 
+              cache: false, 
+              headers: {
+                  'Authorization': 'Bearer 토큰값',
+                  'X-Client-Id': '클라이언트 아이디'
+              },
+              success: function (data) { 
+                ...
+              }, 
+              error: function (e) { 
+                ...
+              },
+              complete: function() {
+                ...
+              }
+            });
+  /etaxbill-service/v1/certificate/info:
+    get:
+      servers:
+        - url: https://taxtest.blueport.co.kr:8443
+      tags:
+        - 인증서
+      summary: 인증서 정보조회
+      description: 전자(세금)계산서용 인증서 정보를 조회한다.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: String
+          example: "Bearer <TOKEN>"
+        - name: X-Client-Id
+          in: header
+          description: 사용자 아이디(24자리)
+          required: true
+          schema:
+            type: String
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/200OkResult"
+              examples:
+                result:
+                  value:
+                    {
+                      "success": true,
+                      "code": "SUC001",
+                      "msg": "성공",
+                      "data": {
+                          "owner": "CN=(주)블루포트_세금(BLUEP)008168120160129181000387, OU=BLUEPORT, OU=HNB, OU=xUse4Esero, O=yessign, C=kr",
+                          "issuer": "CN=yessignCA Class 2, OU=AccreditedCA, O=yessign, C=kr",
+                          "creationDate": "2022-01-26",
+                          "expirationDate": "2023-02-04",
+                          "algorithm": "SHA256withRSA",
+                          "type": "X.509"
+                      }
+                    }
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/400BadRequest"
+              examples:
+                result:
+                  value:
+                    {
+                      "success": false,
+                      "code": "AUT005",
+                      "msg": "사용자 정보 미존재 오류"
+                    }
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500InternalServerError"
+              examples:
+                result:
+                  value:
+                    {
+                      "success": false,
+                      "code": "ERR999",
+                      "msg": "정의되지 않은 기타오류"
+                    }
 
 components:
   requestBodies:
@@ -2304,6 +2471,20 @@ components:
         toCCAddress:
           description: 참조 메일주소 ( ' , '로 구분)
           type: String
+
+    taxInvoiceCertification:
+      type: object
+      properties:
+        files: 
+          description: "인증서 파일 리스트 (인증서: *.der, 개인키: *.key)"
+          type: ArrayList<MultipartFile>
+        password:
+          description: 인증서 패스워드
+          type: String
+        passwordConfirm:
+          description: 인증서 패스워드 확인
+          type: String
+
     200OkResult:
       type: object
       properties:
