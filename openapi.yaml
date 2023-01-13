@@ -3439,10 +3439,6 @@ components:
         toCCAddress:
           description: 참조 메일주소 ( ' , '로 구분)
           type: String
-        businessId:
-          description: 로그인한 사용자의 Business ID(Blueport:f2d3fc27f671be4a1914e571)
-          type: String
-          
 
     taxInvoiceCertification:
       type: object
@@ -5044,6 +5040,9 @@ components:
           type: String
         toCCAddress:
           description: 참조 메일주소 ( ' , '로 구분)
+          type: String
+        businessId:
+          description: 로그인한 사용자의 Business Id (Blueport는 f2d3fc27f671be4a1914e571)
           type: String
 
     taxInvoiceCertification:
